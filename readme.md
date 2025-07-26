@@ -51,7 +51,11 @@ Mass manufacturing can be activated by adding a ``MassManufacturing`` sheet to
 the input Excel file (see ``data/inputfile_MassManufacturing.xlsx`` for an
 example).  The sheet defines parameters such as ``Enable Mass Manufacturing``,
 production volume and factory setup cost used by the learning and
-modularization routines.
+modularization routines.  The mass manufacturing sheet can also define
+``Factory Fractions`` to override the default percentage of factory
+assembly for each component category (e.g. ``A.21:0.3,A.22:0.95``).  If not
+specified, TIMCAT uses built-in fractions reflecting the typical degree of
+factory fabrication for buildings, reactor equipment and other components.
 
 ## File descriptions
 All example input and configuration files are stored in the ``data``

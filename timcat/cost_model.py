@@ -290,7 +290,7 @@ def run_ncet(
 
         # Modularize, learn, and build the scheduler table
         dfNP, idx_modules = modularize.modularize(
-            path, plant_fname, dfNP, orders, scalars_dict
+            path, plant_fname, dfNP, orders, scalars_dict, plant_characteristics
         )
         newPlant_list, learning_rate = learn.learn(
             path, plant_fname, dfNP, orders, scalars_dict, idx_modules
