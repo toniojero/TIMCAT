@@ -23,7 +23,7 @@ setup(
         "astropy",
         "pint",
     ],
-    entry_points={"console_scripts": ["timechecker = TIMCAT.main:main"]},
+    entry_points={"console_scripts": ["timcat = timcat.cli:main"]},
     classifiers=[
         "Development Status :: Concept",
         "Intended Audience :: Science/Research",

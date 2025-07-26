@@ -35,20 +35,21 @@ To update, simply reinstall with pip from the TIMCAT directory:
 (And to uninstall, simply run: ``pip3 uninstall TIMCAT``)
 
 ## Usage
-As configured, TIMCAT is run by editing input files and their names in cost_sensitivity.py and running
-cost_sensitivity.py. 
+After editing the input files, the model can be executed using the ``timcat``
+command line tool installed with the package.  The basic usage is:
 
-You must specify the basis table, and the input files. Edit these lines in cost_sensitivity.py:
-
-```python
-plant = "PWR12ME"
-BASIS_FNAME = (
-    "PATHTOFILE/PWR12_ME_inflated_reduced.csv"
-)
-plant_fname = "inputfile_" + plant + ".xlsx"
+```
+timcat PWR12ME --basis PATHTOFILE/PWR12_ME_inflated_reduced.csv \
+       --input inputfile_PWR12ME.xlsx
 ```
 
+Additional options are available to specify the number of plant orders, Monte
+Carlo runs and whether to generate the construction scheduler table.  Run
+``timcat --help`` for a full list of options.
+
 ## File descriptions
+All example input and configuration files are stored in the ``data``
+directory.
 #### "PWR12_ME_inflated_reduced.csv"
 This is the reference cost data for the PWR12-ME plant. Costs were inflated from 1987 USD in EEDB to 2018 USD.
 
