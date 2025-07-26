@@ -3,13 +3,13 @@ from os.path import join as pjoin
 import pandas as pd
 import os
 import pdb
-from ncet import fill_scaling_table
-from ncet import scale_direct_costs
-from ncet import modularize
-from ncet import learn
-from ncet import get_indirect_costs
-from ncet import sum_accounts
-from ncet import get_sub_account_iloc
+from .ncet import fill_scaling_table
+from .ncet import scale_direct_costs
+from .ncet import modularize
+from .ncet import learn
+from .ncet import get_indirect_costs
+from .ncet import sum_accounts
+from .ncet import get_sub_account_iloc
 import cProfile
 import datetime
 
@@ -151,7 +151,8 @@ def build_mc_output_series(df):
 
 
 def get_building_table(plant_characteristics, scaling_table):
-    bldg_template = pd.read_csv("building_template.csv", index_col="Account")
+    data_dir = pjoin(os.path.dirname(__file__), "..", "data")
+    bldg_template = pd.read_csv(pjoin(data_dir, "building_template.csv"), index_col="Account")
     bldg_template["Area"] = bldg_template.index
     bldg_template["Area"] = bldg_template["Area"].map(plant_characteristics)
     for account in bldg_template.index:
@@ -193,7 +194,8 @@ def run_ncet(
     make_building_table=False,
     save_all=False,
 ):
-    scheduler_table = pd.read_csv("scheduler_table.csv", index_col=0)
+    data_dir = pjoin(os.path.dirname(__file__), "..", "data")
+    scheduler_table = pd.read_csv(pjoin(data_dir, "scheduler_table.csv"), index_col=0)
 
     # Make the directories if they don't exist (use the timestamp to avoid overwriting anythingS)
     if not os.path.isdir(path + "/out"):
