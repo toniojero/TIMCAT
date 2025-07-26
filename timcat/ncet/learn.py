@@ -15,12 +15,26 @@ def learn(path, fname, dfNewPlant, orders, scalars_dict, idx_modules):
     dfNewPlant["Count per plant"].fillna(1, inplace=True)
 
     # learning rates and max cost reduction
-    fact_rate = scalars_dict["Factory learning rate"]  # 0.16
+    # Check for mass manufacturing mode
+    mass_mfg_enabled = scalars_dict.get("Enable Mass Manufacturing", False)
+
+    if mass_mfg_enabled:
+        print("Applying mass manufacturing learning curves")
+        # Use steeper learning rates for mass manufacturing
+        fact_rate = scalars_dict.get("Supply Chain Learning Rate", 0.25)
+        mat_rate = scalars_dict.get("Supply Chain Learning Rate", 0.25)
+        lab_rate = scalars_dict.get("Supply Chain Learning Rate", 0.25)
+        lab_min = scalars_dict.get("Mass Mfg Labor Minimum", 0.3)
+        mat_min = scalars_dict.get("Mass Mfg Material Minimum", 0.4)
+        print(f"Using learning rate: {fact_rate}, minimums: labor={lab_min}, material={mat_min}")
+    else:
+        # Use existing learning rates
+        fact_rate = scalars_dict["Factory learning rate"]  # 0.16
+        mat_rate = scalars_dict["Material learning rate"]  # 0.071
+        lab_rate = scalars_dict["Labor learning rate"]  # 0.131
+        lab_min = scalars_dict["Labor minimum"]  # 0.55
+        mat_min = scalars_dict["Material minimum"]  # 0.73
     fact_N0 = 100
-    mat_rate = scalars_dict["Material learning rate"]  # 0.071
-    lab_rate = scalars_dict["Labor learning rate"]  # 0.131
-    lab_min = scalars_dict["Labor minimum"]  # 0.55
-    mat_min = scalars_dict["Material minimum"]  # 0.73
     mat_learning_factor = np.maximum(
         mat_min, plants ** np.log2(1 - mat_rate)
     )  # learning rate at  9%, max reduction 27%

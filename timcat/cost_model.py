@@ -22,6 +22,16 @@ def update_input_scaling(fname, case="Base"):
     # Create dictionary of parameters for the specific case
     scalars_dict = df_scalars.set_index("Parameter")[case + " value"].to_dict()
 
+    # Check for mass manufacturing parameters and add to scalars_dict
+    try:
+        if 'MassManufacturing' in pd.ExcelFile(fname).sheet_names:
+            mass_mfg_df = pd.read_excel(fname, sheet_name="MassManufacturing", index_col=0)
+            mass_mfg_params = mass_mfg_df.to_dict()[1]
+            scalars_dict.update(mass_mfg_params)
+            print("Mass manufacturing parameters loaded into scalars_dict")
+    except Exception as e:
+        print(f"Could not load mass manufacturing parameters: {e}")
+
     # Map the new values to the input df
     options = [0, 1, 2]
     for option in options:
@@ -96,6 +106,16 @@ def rand_input_scaling(fname):
 
     # Create dictionary of parameters for the specific case
     scalars_dict = df_scalars["New value"].to_dict()
+
+    # Check for mass manufacturing parameters and add to scalars_dict
+    try:
+        if 'MassManufacturing' in pd.ExcelFile(fname).sheet_names:
+            mass_mfg_df = pd.read_excel(fname, sheet_name="MassManufacturing", index_col=0)
+            mass_mfg_params = mass_mfg_df.to_dict()[1]
+            scalars_dict.update(mass_mfg_params)
+            print("Mass manufacturing parameters loaded into scalars_dict")
+    except Exception as e:
+        print(f"Could not load mass manufacturing parameters: {e}")
 
     # Map the new values to the input df
     options = [0, 1, 2]
