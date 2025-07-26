@@ -34,6 +34,24 @@ def fill_scaling_table(path, fname, base, scalars_dict, scaling_table=None):
         skiprows=[0],
         index_col=0,
     ).to_dict()[1]
+
+    # Check for mass manufacturing sheet and load parameters
+    try:
+        if 'MassManufacturing' in pd.ExcelFile(pjoin(path, fname)).sheet_names:
+            mass_mfg_df = pd.read_excel(
+                pjoin(path, fname),
+                sheet_name="MassManufacturing",
+                header=0,
+                index_col=0,
+            )
+            mass_mfg_params = mass_mfg_df.to_dict()[1]
+            plant_characteristics.update(mass_mfg_params)
+            print("Mass manufacturing mode detected and parameters loaded")
+        else:
+            plant_characteristics["Enable Mass Manufacturing"] = False
+    except Exception as e:
+        print(f"No mass manufacturing sheet found or error loading: {e}")
+        plant_characteristics["Enable Mass Manufacturing"] = False
     plant_characteristics["SPC One sided"] = []
     plant_characteristics["SPC Two sided"] = []
     plant_characteristics["SPC Area"] = []
